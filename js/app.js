@@ -42,7 +42,9 @@ const displayPhones=(phones,dataLimit)=>{
                     <img src="${phone.image}" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">${phone.phone_name}</h5>
-                      <p class="card-text">${phone.slug}</p>
+                      <p class="card-text">this is a longer card with some details and this is effective for collecting information about the device>
+                    <button onclick="loadPhoneDetails('${phone.slug}')"  href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#phoneDetailModal">Show Details</button>
+                    </div>
                     </div>`;
      phoneContainer.appendChild(phoneDiv);
 
@@ -84,4 +86,27 @@ document.getElementById('btn-show-all').addEventListener('click',function(){
   processSearch();
 })
 
-loadPhones();
+
+const loadPhoneDetails= async id =>{
+  const url=`https://openapi.programming-hero.com/api/phone/${id}`;
+  const res=await fetch(url);
+  const data=await res.json();
+  displayPhoneDetails(data.data);
+}
+
+const displayPhoneDetails= phone =>{
+     console.log(phone);
+     const modalTitle=document.getElementById('phoneDetailModalLabel');
+     modalTitle.innerText=phone.name;
+
+       
+    const phoneDetails=document.getElementById('phone-details');
+    phoneDetails.innerHTML=`
+    <p>Release Date:${phone.releaseDate ? phone.releaseDate :'No ReleaseDate Information found'} </p>
+    <p>Others : ${phone.others ? phone.others.Bluetooth : 'Nothing Found'}</p>
+    <p>Display :${phone.mainFeatures ? phone.mainFeatures.displaySize :'No information'}</p>
+    <p>Storage :${phone.mainFeatures ? phone.mainFeatures.storage :'No information'}</p>
+    `;
+}
+
+loadPhones('a');
