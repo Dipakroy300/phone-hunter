@@ -109,4 +109,4 @@ const displayPhoneDetails= phone =>{
     `;
 }
 
-loadPhones('a');
+loadPhones();
